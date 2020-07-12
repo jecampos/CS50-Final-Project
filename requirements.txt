@@ -1,0 +1,4 @@
+matplotlib
+sounddevice
+numpy
+pygame
