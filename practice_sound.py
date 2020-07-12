@@ -8,3 +8,5 @@ def print_sound(indata, outdata, frames, time, status):
 
 with sd.Stream(callback=print_sound):
     sd.sleep(10000)
+
+#  From https://stackoverflow.com/questions/40138031/how-to-read-realtime-microphone-audio-volume-in-python-and-ffmpeg-or-similar
