@@ -12,5 +12,8 @@ while True:
         sd.stop()
         break
 
+
 sd.play(myrecording, fs)
 sd.wait()
+
+
