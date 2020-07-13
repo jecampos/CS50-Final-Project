@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # %matplotlib tk
+plt.style.use("ggplot")
 
 CHUNK = 1024  * 4
 FORMAT = pyaudio.paInt16
