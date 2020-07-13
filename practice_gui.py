@@ -27,9 +27,10 @@ statusLabel = tk.Label(root, text="Start Recording")
 statusLabel.pack()
 
 # creating stop button
-stopPhoto = ImageTk.PhotoImage(Image.open("stop_button.png"))
+stopPhoto = ImageTk.PhotoImage(Image.open("50px_stop_button.png"))
 
-stopButton = tk.Button(root, image=stopPhoto, height=150, width=150, command= lambda: stopRecording())
+stopButton = tk.Button(root, image=stopPhoto, height=50, width=50, command= lambda: stopRecording())
+stopButton["border"] = "0" # making button round
 stopButton.pack()
 
 
