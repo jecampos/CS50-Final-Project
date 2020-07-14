@@ -1,13 +1,13 @@
-import pyaudio 
+
+import pyaudio
 import struct
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
+import time
 
-# %matplotlib tk
 plt.style.use("ggplot")
 
-CHUNK = 1024  * 4
+CHUNK = 1024 * 4
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
@@ -20,23 +20,23 @@ stream = p.open(
 	rate=RATE,
 	input=True,
 	output=True,
-	frames_per_buffer=(CHUNK)
-)
-
+	frames_per_buffer=CHUNK
+ )
+ 
 plt.ion()
 fig, ax = plt.subplots()
 
-x = np.arange(0, CHUNK * 2, 2)
-line, = ax.plot(x, np.random.rand(CHUNK))
-ax.set_ylim(0, 255)
-ax.set_xlim(0, CHUNK)
+x = np.arange(0, CHUNK)
+data = stream.read(CHUNK)
+data_int16 = struct.unpack(str(CHUNK) + 'h', data)
+line, = ax.plot(x, data_int16)
+ax.set_ylim([-2**15,(2**15)-1])
 
 
 while True:
-	# print("heer")
-	data = stream.read(CHUNK)
-	data_int = np.array(struct.unpack(str(2 * CHUNK) + 'B', data), dtype='b')[::2] + 128
-	line.set_ydata(data_int)
+	data = struct.unpack(str(CHUNK) + 'h', stream.read(CHUNK))
+	line.set_ydata(data)
 	fig.canvas.draw()
 	fig.canvas.flush_events()
+
 
