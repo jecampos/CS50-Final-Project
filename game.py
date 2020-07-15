@@ -19,8 +19,8 @@ S_IMG = (700, 100)
 isRecording = False
 record = None
 recordData = []
-# isPlaying = False
-# playFile = None
+isPlaying = False
+playFile = None
 
 pygame.init()
 
@@ -83,10 +83,12 @@ def stopRecording():
 
 def playRecord():
 
-	# global playFile
+	global playFile, isPlaying
 
-	# playFile = wave.open("test.wav", 'rb')
-	pass
+	isPlaying = True
+
+	playFile = wave.open("test.wav", 'rb')
+
 
 
 while True:
@@ -116,6 +118,7 @@ while True:
 			playImgPressed = pygame.Rect(P_IMG[0], P_IMG[1], PLAY_IMG.get_width(), PLAY_IMG.get_height())
 			if playImgPressed.collidepoint(mouseX, mouseY):
 
+				playRecord()
 				print("clicked play")
 
 			stopImgPressed = pygame.Rect(S_IMG[0], S_IMG[1], STOP_IMG.get_width(), STOP_IMG.get_height())
@@ -143,12 +146,16 @@ while True:
 		x += 2
 
 	if isRecording:
-		print(isRecording)
 		data = record.read(1024)
 		recordData.append(data)
 
-	# if isPlaying:
-	# 	data = playFile.readframes(1024)
+	if isPlaying:
+
+		data = playFile.readframes(1024)
+		if len(data) > 0:
+			stream.write(data)
+		else:
+			isPlaying = False
 
 
 	screen.blit(sound, (0, 200))
