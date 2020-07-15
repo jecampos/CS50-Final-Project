@@ -13,13 +13,13 @@ DIMENSION = (1200, 600)
 RECORD_IMG = pygame.image.load(os.path.join('resources', 'record-80.png'))
 PLAY_IMG = pygame.image.load(os.path.join('resources', 'play-80.png'))
 STOP_IMG = pygame.image.load(os.path.join('resources', 'stop-80.png'))
-SAVE_IMG = pygame.image.load(os.path.join('resources', 'save-80.png'))
+SAVE_IMG = pygame.image.load(os.path.join('resources', 'icons8-save-40.png'))
 
 # images coordinates
 R_COORDS = (400, 100)
 P_COORDS = (500, 100)
 STP_COORDS = (600, 100)
-SVE_COORDS = (700, 100)
+SVE_COORDS = (700, 120)
 
 
 isRecording = False
@@ -118,6 +118,20 @@ def playRecord():
 	playFile = wave.open(".rec", 'rb')
 
 
+def saveRecord():
+
+	"""
+	SAVES RECORD TO A .wav FILE
+	PARAMS: None
+	RETURN: None
+	"""
+
+	if os.path.exists('recording1'):
+		pass
+
+	pass
+
+
 # While the program is running
 while True:
 
@@ -158,6 +172,14 @@ while True:
 				
 				stopRecording()
 				print("clicked stop")
+
+
+			saveImgPressed = pygame.Rect(SVE_COORDS[0], SVE_COORDS[1], SAVE_IMG.get_width(), SAVE_IMG.get_height())
+			if saveImgPressed.collidepoint(mouseX, mouseY):
+				
+				# stopRecording()
+				print("clicked save")
+			
 
 	# set background color for surfaces
 	screen.fill((127, 0, 0))
