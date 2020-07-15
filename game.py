@@ -9,6 +9,11 @@ DIMENSION = (1200, 600)
 
 RECORD_IMG = pygame.image.load(os.path.join('resources', 'record-80.png'))
 PLAY_IMG = pygame.image.load(os.path.join('resources', 'play-80.png'))
+STOP_IMG = pygame.image.load(os.path.join('resources', 'stop-80.png'))
+
+R_IMG = (500, 100)
+P_IMG = (600, 100)
+S_IMG = (700, 100)
 
 pygame.init()
 
@@ -34,24 +39,23 @@ stream = p.open(
 
 def startRecording():
 
-	record = p.open(
-		format=FORMAT,
-		channels=CHANNELS,
-		rate=RATE,
-		input=True,
-		output=True,
-		frames_per_buffer=CHUNK
-	)
 
-	return record
+	# record = p.open(
+	# 	format=FORMAT,
+	# 	channels=CHANNELS,
+	# 	rate=44100,
+	# 	input=True,
+	# 	output=True,
+	# 	frames_per_buffer=1024
+	# )
+	pass
 
-def stopRecording(record):
+def stopRecording():
 
-	record.stop_stream()
-	record.close()
+	pass
 
 
-def playRecord(recordData):
+def playRecord():
 
 	pass
 
@@ -62,12 +66,32 @@ while True:
 	G = np.random.randint(0, 255)
 	B = np.random.randint(0, 255)
 
-	for events in pygame.event.get():
+	for event in pygame.event.get():
 
-		if events.type == pygame.QUIT:
+		if event.type == pygame.QUIT:
 
 			pygame.quit()
 			exit()
+
+		elif event.type == pygame.MOUSEBUTTONDOWN:
+
+			mouseX, mouseY = event.pos
+			
+			recordImgPressed = pygame.Rect(R_IMG[0], R_IMG[1], RECORD_IMG.get_width(), RECORD_IMG.get_height())
+			if recordImgPressed.collidepoint(mouseX, mouseY):
+
+				print("clicked record")
+
+
+			playImgPressed = pygame.Rect(P_IMG[0], P_IMG[1], PLAY_IMG.get_width(), PLAY_IMG.get_height())
+			if playImgPressed.collidepoint(mouseX, mouseY):
+
+				print("clicked play")
+
+			stopImgPressed = pygame.Rect(S_IMG[0], S_IMG[1], STOP_IMG.get_width(), STOP_IMG.get_height())
+			if stopImgPressed.collidepoint(mouseX, mouseY):
+
+				print("clicked stop")
 
 	screen.fill((127, 0, 0))
 	sound.fill((0, 0, 0))
@@ -87,9 +111,13 @@ while True:
 		pygame.draw.line(sound, (R, G, B), (x, data_new[i] + 200), (x + 2, data_new[i + 1] + 200), 3)
 		x += 2
 
+
+
+
 	screen.blit(sound, (0, 200))
-	screen.blit(RECORD_IMG, (525, 100))
-	screen.blit(PLAY_IMG, (625, 100))
+	screen.blit(RECORD_IMG, R_IMG)
+	screen.blit(PLAY_IMG, P_IMG)
+	screen.blit(STOP_IMG, S_IMG)
 
 	
 
