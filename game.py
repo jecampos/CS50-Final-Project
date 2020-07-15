@@ -4,6 +4,7 @@ import struct
 import numpy as np
 import pygame
 import os
+import wave
 
 DIMENSION = (1200, 600)
 
@@ -14,6 +15,12 @@ STOP_IMG = pygame.image.load(os.path.join('resources', 'stop-80.png'))
 R_IMG = (500, 100)
 P_IMG = (600, 100)
 S_IMG = (700, 100)
+
+isRecording = False
+record = None
+recordData = []
+# isPlaying = False
+# playFile = None
 
 pygame.init()
 
@@ -39,24 +46,46 @@ stream = p.open(
 
 def startRecording():
 
+	global record, isRecording
 
-	# record = p.open(
-	# 	format=FORMAT,
-	# 	channels=CHANNELS,
-	# 	rate=44100,
-	# 	input=True,
-	# 	output=True,
-	# 	frames_per_buffer=1024
-	# )
-	pass
+	isRecording = True
+
+
+	record = p.open(
+		format=FORMAT,
+		channels=CHANNELS,
+		rate=44100,
+		input=True,
+		output=True,
+		frames_per_buffer=1024
+	)
+
 
 def stopRecording():
 
-	pass
+	# Stop and close the stream 
+	global isRecording
+
+	isRecording = False
+
+	record.stop_stream()
+	record.close()
+
+	# Save the recorded data as a WAV file
+	closeR = wave.open("test.wav", 'wb')
+	closeR.setnchannels(CHANNELS)
+	closeR.setsampwidth(p.get_sample_size(FORMAT))
+	closeR.setframerate(RATE)
+	closeR.writeframes(b''.join(recordData))
+	closeR.close()
+
 
 
 def playRecord():
 
+	# global playFile
+
+	# playFile = wave.open("test.wav", 'rb')
 	pass
 
 
@@ -78,8 +107,9 @@ while True:
 			mouseX, mouseY = event.pos
 			
 			recordImgPressed = pygame.Rect(R_IMG[0], R_IMG[1], RECORD_IMG.get_width(), RECORD_IMG.get_height())
-			if recordImgPressed.collidepoint(mouseX, mouseY):
+			if recordImgPressed.collidepoint(mouseX, mouseY) and not isRecording:
 
+				startRecording()
 				print("clicked record")
 
 
@@ -90,7 +120,8 @@ while True:
 
 			stopImgPressed = pygame.Rect(S_IMG[0], S_IMG[1], STOP_IMG.get_width(), STOP_IMG.get_height())
 			if stopImgPressed.collidepoint(mouseX, mouseY):
-
+				
+				stopRecording()
 				print("clicked stop")
 
 	screen.fill((127, 0, 0))
@@ -111,7 +142,13 @@ while True:
 		pygame.draw.line(sound, (R, G, B), (x, data_new[i] + 200), (x + 2, data_new[i + 1] + 200), 3)
 		x += 2
 
+	if isRecording:
+		print(isRecording)
+		data = record.read(1024)
+		recordData.append(data)
 
+	# if isPlaying:
+	# 	data = playFile.readframes(1024)
 
 
 	screen.blit(sound, (0, 200))
