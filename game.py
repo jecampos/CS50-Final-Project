@@ -13,7 +13,7 @@ DIMENSION = (1200, 600)
 RECORD_IMG = pygame.image.load(os.path.join('resources', 'record-80.png'))
 PLAY_IMG = pygame.image.load(os.path.join('resources', 'play-80.png'))
 STOP_IMG = pygame.image.load(os.path.join('resources', 'stop-80.png'))
-SAVE_IMG = pygame.image.load(os.path.join('resources', 'icons8-save-64.png'))
+SAVE_IMG = pygame.image.load(os.path.join('resources', 'save-80.png'))
 
 # images coordinates
 R_COORDS = (400, 100)
