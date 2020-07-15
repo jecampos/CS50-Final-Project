@@ -2,3 +2,5 @@ matplotlib
 sounddevice
 numpy
 pygame
+tkinter
+PIL
