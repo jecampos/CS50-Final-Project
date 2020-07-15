@@ -6,15 +6,21 @@ import pygame
 import os
 import wave
 
+# Pygame window dimension
 DIMENSION = (1200, 600)
 
+# LOAD images from resources/
 RECORD_IMG = pygame.image.load(os.path.join('resources', 'record-80.png'))
 PLAY_IMG = pygame.image.load(os.path.join('resources', 'play-80.png'))
 STOP_IMG = pygame.image.load(os.path.join('resources', 'stop-80.png'))
+SAVE_IMG = pygame.image.load(os.path.join('resources', 'icons8-save-64.png'))
 
-R_IMG = (500, 100)
-P_IMG = (600, 100)
-S_IMG = (700, 100)
+# images coordinates
+R_COORDS = (400, 100)
+P_COORDS = (500, 100)
+STP_COORDS = (600, 100)
+SVE_COORDS = (700, 100)
+
 
 isRecording = False
 record = None
@@ -22,13 +28,16 @@ recordData = []
 isPlaying = False
 playFile = None
 
+# Initialize pygame
 pygame.init()
 
+# create pygame window
 screen = pygame.display.set_mode(DIMENSION)
 
+# surface for sound visualization
 sound = pygame.Surface((1200, 400))
 
-CHUNK = 600
+CHUNK = 1024 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
@@ -46,22 +55,35 @@ stream = p.open(
 
 def startRecording():
 
-	global record, isRecording
+	"""
+	Starts recording audio
+	PARAMS: None
+	RETURN: None
+	"""
+
+	global record, isRecording, recordData
 
 	isRecording = True
+	recordData = []
 
 
 	record = p.open(
 		format=FORMAT,
 		channels=CHANNELS,
-		rate=44100,
+		rate=RATE,
 		input=True,
 		output=True,
-		frames_per_buffer=1024
+		frames_per_buffer=CHUNK
 	)
 
 
 def stopRecording():
+	
+	"""
+	Stops the recording
+	PARAMS: None
+	RETURN: None
+	"""
 
 	# Stop and close the stream 
 	global isRecording
@@ -71,8 +93,8 @@ def stopRecording():
 	record.stop_stream()
 	record.close()
 
-	# Save the recorded data as a WAV file
-	closeR = wave.open("test.wav", 'wb')
+	# Save the recorded data 
+	closeR = wave.open(".rec", 'wb')
 	closeR.setnchannels(CHANNELS)
 	closeR.setsampwidth(p.get_sample_size(FORMAT))
 	closeR.setframerate(RATE)
@@ -83,88 +105,113 @@ def stopRecording():
 
 def playRecord():
 
+	""" 
+	PLAYS RECORDING
+	PARAMS: None
+	RETURN: None
+	"""
+
 	global playFile, isPlaying
 
 	isPlaying = True
 
-	playFile = wave.open("test.wav", 'rb')
+	playFile = wave.open(".rec", 'rb')
 
 
-
+# While the program is running
 while True:
 
-	R = np.random.randint(0, 255)
-	G = np.random.randint(0, 255)
-	B = np.random.randint(0, 255)
-
+	# Listen for events
 	for event in pygame.event.get():
 
+		# if exit button is clicked exit the program
 		if event.type == pygame.QUIT:
 
+			if os.path.exists('.rec'):
+				os.remove('.rec')
 			pygame.quit()
 			exit()
 
+		# for mouse button down events
 		elif event.type == pygame.MOUSEBUTTONDOWN:
 
+			# get mouse x and y coordinates
 			mouseX, mouseY = event.pos
 			
-			recordImgPressed = pygame.Rect(R_IMG[0], R_IMG[1], RECORD_IMG.get_width(), RECORD_IMG.get_height())
+			# Check if record surface was pressed
+			recordImgPressed = pygame.Rect(R_COORDS[0], R_COORDS[1], RECORD_IMG.get_width(), RECORD_IMG.get_height())
 			if recordImgPressed.collidepoint(mouseX, mouseY) and not isRecording:
 
 				startRecording()
 				print("clicked record")
 
-
-			playImgPressed = pygame.Rect(P_IMG[0], P_IMG[1], PLAY_IMG.get_width(), PLAY_IMG.get_height())
+			# Check if play surface was pressed
+			playImgPressed = pygame.Rect(P_COORDS[0], P_COORDS[1], PLAY_IMG.get_width(), PLAY_IMG.get_height())
 			if playImgPressed.collidepoint(mouseX, mouseY):
 
 				playRecord()
 				print("clicked play")
 
-			stopImgPressed = pygame.Rect(S_IMG[0], S_IMG[1], STOP_IMG.get_width(), STOP_IMG.get_height())
-			if stopImgPressed.collidepoint(mouseX, mouseY):
+			# Check if stop surface was pressed
+			stopImgPressed = pygame.Rect(STP_COORDS[0], STP_COORDS[1], STOP_IMG.get_width(), STOP_IMG.get_height())
+			if stopImgPressed.collidepoint(mouseX, mouseY) and isRecording:
 				
 				stopRecording()
 				print("clicked stop")
 
+	# set background color for surfaces
 	screen.fill((127, 0, 0))
 	sound.fill((0, 0, 0))
 
 	data = struct.unpack(str(CHUNK) + 'h', stream.read(CHUNK))
 
-	data_new = []
-	for i in range(len(data)):
-		if data[i] < 0:
-			data_new.append(-1 * (abs(data[i]) // 40))
+	# scale the values in data by integer division of 40
+	# then store them in a new list
+	streamData = []
+	for audioData in data:
+		if audioData < 0:
+			streamData.append(-1 * (abs(audioData // 40)))
 		else:
-			data_new.append(data[i] // 40)
+			streamData.append(audioData // 40)
 
+	# x coordinate of the line
 	x = 0
-	for i in range(len(data_new) - 1):
+	# Random RGB values for the line 
+	R = np.random.randint(0, 255)
+	G = np.random.randint(0, 255)
+	B = np.random.randint(0, 255)
 
-		pygame.draw.line(sound, (R, G, B), (x, data_new[i] + 200), (x + 2, data_new[i + 1] + 200), 3)
+	# Loop through data and draw a line
+	for i in range(len(streamData) - 1):
+
+		pygame.draw.line(sound, (R, G, B), (x, streamData[i] + 200), (x + 2, streamData[i + 1] + 200), 3)
 		x += 2
 
+	# Check if we are recording
 	if isRecording:
-		data = record.read(1024)
+		data = record.read(CHUNK)
 		recordData.append(data)
 
+	# Check if we are playing a recording
 	if isPlaying:
-
-		data = playFile.readframes(1024)
+		
+		data = playFile.readframes(CHUNK)
 		if len(data) > 0:
 			stream.write(data)
 		else:
 			isPlaying = False
+			# close file
+			playFile.close()
 
 
+	# Blit to the screen the images and the sound surface
 	screen.blit(sound, (0, 200))
-	screen.blit(RECORD_IMG, R_IMG)
-	screen.blit(PLAY_IMG, P_IMG)
-	screen.blit(STOP_IMG, S_IMG)
+	screen.blit(RECORD_IMG, R_COORDS)
+	screen.blit(PLAY_IMG, P_COORDS)
+	screen.blit(STOP_IMG, STP_COORDS)
+	screen.blit(SAVE_IMG, SVE_COORDS)
 
-	
-
+	# update the window
 	pygame.display.update()
 
 

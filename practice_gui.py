@@ -51,12 +51,12 @@ def startRecording(statusLabel):
 	input=True,
 	output=True,
 	frames_per_buffer=CHUNK
-
+    )
+    
     while (True):
         data = stream.read(chunk)
         frames.append(data)
-
-)
+    
 
 
 def stopRecording(statusLabel):
