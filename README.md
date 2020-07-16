@@ -1,5 +1,5 @@
 # Final Project
- CS50 FInal Project by jecampos and CSjianbel
+ CS50x FInal Project by jecampos and CSjianbel
 
 # Description
 
@@ -10,7 +10,6 @@ would see the lines move in accordance with what you said. With the buttons abov
 start recording. Once you feel like you're done recording, you would click the stop button and have the option to either play back the audio, or save it somewhere on the desktop
 using their buttons respectively. When it comes to the colors of the lines in the visualization, they provide no real information and
 are just there for aesthetic. I hope you enjoy this small project.
-
 
 # Lisence and Copright 
 
