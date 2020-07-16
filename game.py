@@ -137,13 +137,10 @@ def saveRecord():
 		return None
 
 	tk = tkinter.Tk()
-	filename = filedialog.asksaveasfilename(initialdir="./recordings", title="Save Recording", filetypes = (("wav files", ".wav"), ("all files", ".*")))
-	filename = filename.split("/")
-	filename = filename[-1]
-
+	filename = filedialog.asksaveasfilename(initialdir="./Final-Project/recordings", title="Save Recording", filetypes = (("wav files", ".wav"), ("all files", ".*")))
 	tk.destroy()
 
-	os.rename("./recordings/.rec", f"./recordings/{filename}.wav")
+	os.rename("./recordings/.rec", f"{filename}.wav")
 
 
 # While the program is running
