@@ -1,9 +1,11 @@
 
+import os
 import pyaudio
 import struct
 import numpy as np
 import pygame
-import os
+import tkinter
+from tkinter import filedialog
 import wave
 
 # Pygame window dimension
@@ -94,7 +96,7 @@ def stopRecording():
 	record.close()
 
 	# Save the recorded data 
-	closeR = wave.open(".rec", 'wb')
+	closeR = wave.open("./recordings/.rec", 'wb')
 	closeR.setnchannels(CHANNELS)
 	closeR.setsampwidth(p.get_sample_size(FORMAT))
 	closeR.setframerate(RATE)
@@ -115,7 +117,10 @@ def playRecord():
 
 	isPlaying = True
 
-	playFile = wave.open(".rec", 'rb')
+	if os.path.exists("./recordings/.rec"):
+		playFile = wave.open("./recordings/.rec", 'rb')
+	else:
+		print("No recording yet")
 
 
 def saveRecord():
@@ -126,10 +131,19 @@ def saveRecord():
 	RETURN: None
 	"""
 
-	if os.path.exists('recording1'):
-		pass
+	if not os.path.exists("./recordings/.rec"):
 
-	pass
+		print("No recording")
+		return None
+
+	tk = tkinter.Tk()
+	filename = filedialog.asksaveasfilename(initialdir="./recordings", title="Save Recording", filetypes = (("wav files", ".wav"), ("all files", ".*")))
+	filename = filename.split("/")
+	filename = filename[-1]
+
+	tk.destroy()
+
+	os.rename("./recordings/.rec", f"./recordings/{filename}.wav")
 
 
 # While the program is running
@@ -141,8 +155,8 @@ while True:
 		# if exit button is clicked exit the program
 		if event.type == pygame.QUIT:
 
-			if os.path.exists('.rec'):
-				os.remove('.rec')
+			if os.path.exists('./recordings/.rec'):
+				os.remove('./recordings/.rec')
 			pygame.quit()
 			exit()
 
@@ -177,7 +191,7 @@ while True:
 			saveImgPressed = pygame.Rect(SVE_COORDS[0], SVE_COORDS[1], SAVE_IMG.get_width(), SAVE_IMG.get_height())
 			if saveImgPressed.collidepoint(mouseX, mouseY):
 				
-				# stopRecording()
+				saveRecord()
 				print("clicked save")
 			
 
@@ -207,6 +221,7 @@ while True:
 	for i in range(len(streamData) - 1):
 
 		pygame.draw.line(sound, (R, G, B), (x, streamData[i] + 200), (x + 2, streamData[i + 1] + 200), 3)
+		# pygame.draw.rect(sound, (R, G, B), (x, streamData[i] + 200, x + 2, streamData[i + 1]))
 		x += 2
 
 	# Check if we are recording

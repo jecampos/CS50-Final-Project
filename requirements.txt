@@ -1,6 +1,4 @@
-matplotlib
-sounddevice
+pyaudio
 numpy
 pygame
 tkinter
-PIL
