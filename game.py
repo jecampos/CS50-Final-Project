@@ -115,10 +115,9 @@ def playRecord():
 
 	global playFile, isPlaying
 
-	isPlaying = True
-
 	if os.path.exists("./recordings/.rec"):
 		playFile = wave.open("./recordings/.rec", 'rb')
+		isPlaying = True
 	else:
 		print("No recording yet")
 
@@ -131,15 +130,18 @@ def saveRecord():
 	RETURN: None
 	"""
 
+	# Check if there are recordings
 	if not os.path.exists("./recordings/.rec"):
 
 		print("No recording")
 		return None
 
+	# get save as prompt
 	tk = tkinter.Tk()
 	filename = filedialog.asksaveasfilename(initialdir="./Final-Project/recordings", title="Save Recording", filetypes = (("wav files", ".wav"), ("all files", ".*")))
 	tk.destroy()
 
+	# save file
 	os.rename("./recordings/.rec", f"{filename}.wav")
 
 
