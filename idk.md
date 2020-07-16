@@ -24,6 +24,10 @@ pip install -r requirements.txt
 python voiceapp.py
 ```
 
-# Lisence and Copright 
+# Contributing	
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.  
+
+# Credits 
 
 Images from https://icons8.com
