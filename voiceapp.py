@@ -11,7 +11,7 @@ import wave
 # Pygame window dimension
 DIMENSION = (1200, 600)
 
-# LOAD images from resources/
+# LOAD images from ./resources/
 RECORD_IMG = pygame.image.load(os.path.join('resources', 'record-80.png'))
 PLAY_IMG = pygame.image.load(os.path.join('resources', 'play-80.png'))
 STOP_IMG = pygame.image.load(os.path.join('resources', 'stop-80.png'))
@@ -23,12 +23,15 @@ P_COORDS = (500, 100)
 STP_COORDS = (600, 100)
 SVE_COORDS = (700, 120)
 
-
 isRecording = False
 record = None
 recordData = []
 isPlaying = False
 playFile = None
+
+# Create recordings folder if it doesn't exist
+if not os.path.exists("recordings"):
+	os.makedirs("recordings")
 
 # Initialize pygame
 pygame.init()
