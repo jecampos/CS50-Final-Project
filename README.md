@@ -1,11 +1,12 @@
 # Final Project
  CS50 FInal Project by jecampos and CSjianbel
- Version 1.0.0
 
 # Description
 
-So for the Final Project...
+So for the Final Project, we decided that we would create a voice app that would be able to take the input of 
+microphone and visualize it. We also added basic functions that a lot voice applications have, such as recording,
+playback, and a save feature. We 
 
 # Lisence and Copright 
 
-Images from https://icons8.com/icon/set/record%20icon/windows
+Images from https://icons8.com
