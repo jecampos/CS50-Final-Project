@@ -11,9 +11,6 @@ import wave
 # Pygame window dimension
 DIMENSION = (1200, 600)
 
-# Pygame title
-pygame.display.set_caption('Voice App')
-
 # LOAD images from ./resources/
 RECORD_IMG = pygame.image.load(os.path.join('resources', 'record-80.png'))
 PLAY_IMG = pygame.image.load(os.path.join('resources', 'play-80.png'))
@@ -41,6 +38,9 @@ pygame.init()
 
 # create pygame window
 screen = pygame.display.set_mode(DIMENSION)
+
+# Pygame title
+pygame.display.set_caption('Voice App')
 
 # surface for sound visualization
 sound = pygame.Surface((1200, 400))
