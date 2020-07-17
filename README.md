@@ -7,11 +7,11 @@ This is the final project for CS50's Introduction to Computer Sciece.
 
 I had made a Voice application with a GUI made using python's pygame module, It has the basic features such as recording, playback and saving.  
 
-The main showcase of our project is we have implemented a visualization of the sound waves of the audio being received by your microphone.
+The main showcase of the project is that I have implemented a visualization of the sound waves of the audio being received by your microphone.
 
 When it comes to the colors of the lines in the visualization, they provide no real information and are just there for aesthetic.
 
-We believe that we have been able to apply our learnings from the course through this project. We hope you enjoy our Voice App
+I believe that I have been able to apply our learnings from the course through this project. I hope you enjoy our Voice App
 
 # Installation/Usage 
 
