@@ -3,9 +3,9 @@ CS50x Final Project by jecampos
 
 # Description
 
-This is a collaboration for CS50's Introduction to Computer Sciece Final Project
+This is the final project for CS50's Introduction to Computer Sciece.
 
-We have made a Voice application with a GUI made using python's pygame module, It has the basic features such as recording, playback and saving.  
+I had made a Voice application with a GUI made using python's pygame module, It has the basic features such as recording, playback and saving.  
 
 The main showcase of our project is we have implemented a visualization of the sound waves of the audio being received by your microphone.
 
