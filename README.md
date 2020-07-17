@@ -1,5 +1,5 @@
 # Voice App	
-CS50x Final Project by jecampos and CSjianbel
+CS50x Final Project by jecampos
 
 # Description
 
